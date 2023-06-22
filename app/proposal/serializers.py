@@ -5,15 +5,15 @@ from proposal.models import Proposal, Address
 class AddressSerialzier(serializers.ModelSerializer):
 
     class Meta:
-        field = "__all__"
+        fields = "__all__"
         model = Address
 
 
 class ProposalSerialzier(serializers.ModelSerializer):
-    address = AddressSerialzier(read_only=False)
+    address = AddressSerialzier(many=True, read_only=False)
 
     class Meta:
-        field = "__all__"
+        fields = "__all__"
         model = Proposal
 
 
@@ -25,8 +25,8 @@ class NewProposalSerializer(serializers.Serializer):
     state = serializers.CharField(max_length=50, required=True, write_only=True)
     city = serializers.CharField(max_length=50, required=True, write_only=True)
     street = serializers.CharField(max_length=250, required=True, write_only=True)
-    number = serializers.PositiveSmallIntegerField(required=True, write_only=True)
-    complement = serializers.CharField(max_length=100, blank=True, required=True, write_only=True)
+    number = serializers.IntegerField(required=True, write_only=True)
+    complement = serializers.CharField(max_length=100, required=True, write_only=True)
     zip_code = serializers.CharField(max_length=8, required=True, write_only=True)
 
     def create(self, validated_data):

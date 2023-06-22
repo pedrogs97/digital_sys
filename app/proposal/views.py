@@ -1,3 +1,4 @@
+from rest_framework.authentication import TokenAuthentication
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.permissions import AllowAny
 from rest_framework.decorators import action
@@ -10,11 +11,10 @@ from proposal.tasks import analyze_proposal
 
 
 class ProposalModelViewSet(ModelViewSet):
-    authentication_classes = None
-    permission_classes = AllowAny
+    authentication_classes = (TokenAuthentication,)
+    permission_classes = (AllowAny,)
     serializer_class = ProposalSerialzier
     queryset = Proposal.objects.all()
-    http_method_names = ["get", "put", "patch"]
 
     @action(detail=False, methods=["POST"])
     def new_proposal(self, request, *args, **kwargs):

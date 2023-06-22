@@ -8,6 +8,8 @@ from proposal.models import Proposal
     track_started=True) 
 def analyze_proposal(self, proposal_id): 
     try: 
-        Proposal.objects.update(status=Proposal.ProposalStatus.APROVADA if proposal_id % 2 == 0 else Proposal.ProposalStatus.NEGADA)
+        proposal = Proposal.objects.get(id=proposal_id)
+        proposal.status=Proposal.ProposalStatus.APROVADA if proposal_id % 2 == 0 else Proposal.ProposalStatus.NEGADA
+        proposal.save()
     except: 
         raise self.retry() 
