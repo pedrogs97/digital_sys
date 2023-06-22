@@ -2,8 +2,9 @@ version: "3.9"
 
 services:
   app:
-    build:
-      context: .
+    build: .
+    networks:
+      - main
     ports:
       - "8000:8000"
     volumes:
@@ -22,6 +23,7 @@ services:
       - DEBUG=1
     depends_on:
       - db
+      - rabbitmq
 
   db:
     image: postgres:13-alpine
@@ -31,6 +33,31 @@ services:
       - POSTGRES_DB=devdb
       - POSTGRES_USER=devuser
       - POSTGRES_PASSWORD=devpass
+    networks:
+      - main
+
+  rabbitmq:
+    container_name: rabbitmq
+    hostname: rabbitmq
+    image: rabbitmq:latest
+    networks:
+      - main
+    ports:
+      - "5672:5672"
+    restart: on-failure
+
+  celery:
+    build: .
+    command: sh -c "celery -A project.celery worker -l info"
+    volumes:
+      - ./app:/app
+    depends_on:
+      - app
+      - db
+      - rabbitmq
+
+networks:
+  main:
 
 volumes:
   dev-db-data:
