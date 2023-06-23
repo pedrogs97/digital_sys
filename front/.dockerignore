@@ -1,0 +1,6 @@
+# Docker
+.docker
+
+# NodeJS
+node_modules
+build

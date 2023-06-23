@@ -26,6 +26,18 @@ services:
       - db
       - rabbitmq
 
+  client:
+    build: ./front
+    command: sh -c "yarn start"
+    networks:
+      - main
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./front/client:/client
+    depends_on:
+      - app
+
   db:
     image: postgres:13-alpine
     volumes:

@@ -26,7 +26,7 @@ SECRET_KEY = "django-insecure-43nc#-p=e4tr11=j3gqvvw*d=^a_-mxypvr^@3-m=r&yjbcvq+
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = bool(int(os.environ.get("DEBUG", 1)))
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["*"]
 ALLOWED_HOSTS.extend(
     filter(
         None,
@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "rest_framework",
+    "corsheaders",
     "django_celery_results",
     "proposal"
 ]
@@ -58,6 +59,7 @@ REST_FRAMEWORK = {
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
+    "corsheaders.middleware.CorsMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
@@ -140,6 +142,11 @@ STATIC_URL = "static/"
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:3000",
+    "http://client:3000",
+]
 
 CELERY_BROKER_URL = 'amqp://guest:guest@rabbitmq'
 CELERY_TASK_TRACK_STARTED = True

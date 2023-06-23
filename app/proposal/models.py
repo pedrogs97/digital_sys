@@ -21,5 +21,5 @@ class Address(models.Model):
     city = models.CharField(max_length=50)
     street = models.CharField(max_length=250)
     number = models.PositiveSmallIntegerField()
-    complement = models.CharField(max_length=100, blank=True)
+    complement = models.CharField(max_length=100, null=True)
     zip_code = models.CharField(max_length=8)
